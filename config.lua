@@ -80,8 +80,5 @@ formatters.setup {
 
 lvim.format_on_save.enabled = true
 
--- floating terminal window on leader t t
-lvim.builtin.which_key.mappings["t"] = {
-  name = "+Terminal",
-  t = { "<cmd>ToggleTerm direction=float<cr><cmd>startinsert<cr>", "Floating terminal" },
-}
+-- floating terminal on leader + t
+lvim.keys.normal_mode["<leader>t"] = { "<cmd>ToggleTerm direction=float<cr><cmd>startinsert<cr>", "Floating terminal" }
