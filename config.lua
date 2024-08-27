@@ -80,5 +80,24 @@ formatters.setup {
 
 lvim.format_on_save.enabled = true
 
--- floating terminal on leader + t
-lvim.keys.normal_mode["<leader>t"] = { "<cmd>ToggleTerm direction=float<cr><cmd>startinsert<cr>", "Floating terminal" }
+-- floating terminal window on leader t t
+lvim.builtin.which_key.mappings["t"] = {
+  name = "+Terminal",
+  t = { "<cmd>ToggleTerm direction=float<cr><cmd>startinsert<cr>", "Floating terminal" },
+}
+
+-- Define the new terminal mapping
+local my_search_mapping = {
+  T = { "<cmd>Telescope<cr>", "telescope" }
+}
+
+-- Retrieve the existing leader s mappings
+local existing_mappings = lvim.builtin.which_key.mappings["s"] or {}
+
+-- Merge the existing mappings with the new mapping
+for key, value in pairs(my_search_mapping) do
+  existing_mappings[key] = value
+end
+
+-- Set the updated mappings
+lvim.builtin.which_key.mappings["s"] = existing_mappings
