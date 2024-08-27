@@ -43,7 +43,8 @@ lvim.plugins = {
     cmd = {
       "G",
       "Git",
-      "Gdiffsplit",
+      "Gvdiffsplit",
+      "Gdiffget",
       "Gread",
       "Gwrite",
       "Ggrep",
@@ -77,11 +78,10 @@ formatters.setup {
   },
 }
 
-
 lvim.format_on_save.enabled = true
 
 -- floating terminal window on leader t t
-lvim.keys.normal_mode["<leader>t"] = ":ToggleTerm direction=float<CR>"
+lvim.keys.normal_mode["<leader>t"] = ":ToggleTerm direction=float<CR><cmd>startinsert<cr>"
 
 -- Define the new terminal mapping
 local my_search_mapping = {
