@@ -1,4 +1,4 @@
--- Read the docs: https://www.lunarvim.org/docs/configuration
+-- nalmead the docs: https://www.lunarvim.org/docs/configuration
 -- Example configs: https://github.com/LunarVim/starter.lvim
 -- Video Tutorials: https://www.youtube.com/watch?v=sFA9kX-Ud_c&list=PLhoH5vyxr6QqGu0i7tt_XoVK9v-KvZ3m6
 -- Forum: https://www.reddit.com/r/lunarvim/
@@ -20,16 +20,23 @@ vim.api.nvim_set_keymap('n', '<D-3>', ':BufferLineGoToBuffer 3<CR>', { noremap =
 vim.api.nvim_set_keymap('n', '<D-4>', ':BufferLineGoToBuffer 4<CR>', { noremap = true, silent = true })
 
 
-lvim.builtin.terminal.active = false
-
 lvim.plugins = {
   {
     "sainnhe/gruvbox-material",
-    'windwp/nvim-autopairs',       -- auto close html tags
     'chrisgrieser/nvim-puppeteer', -- for auto string interpolation converter
+    'tpope/vim-surround',          -- surround selected text with parenthesis, curly braces etc
     config = function()
       vim.cmd("colorscheme gruvbox-material")
     end,
+    {
+      "windwp/nvim-ts-autotag",
+      event = "BufRead",
+      config = function()
+        require("nvim-ts-autotag").setup({
+          filetypes = { "html", "xml", "javascriptreact", "typescriptreact", "vue", "svelte" },
+        })
+      end,
+    },
   },
   {
     "tpope/vim-fugitive",
@@ -70,13 +77,11 @@ formatters.setup {
   },
 }
 
--- auto pairs
-require('nvim-autopairs').setup {}
 
--- format on save
 lvim.format_on_save.enabled = true
 
--- auto close tag
-require('nvim-ts-autotag').setup({
-  filetypes = { "html", "xml", "jsx", "tsx", "vue" }
-})
+-- floating terminal window on leader t t
+lvim.builtin.which_key.mappings["t"] = {
+  name = "+Terminal",
+  t = { "<cmd>ToggleTerm direction=float<cr><cmd>startinsert<cr>", "Floating terminal" },
+}
