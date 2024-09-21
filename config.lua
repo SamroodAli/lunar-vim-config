@@ -5,6 +5,7 @@
 -- Discord: https://discord.com/invite/Xb9B4Ny
 lvim.builtin.nvimtree.setup.view.side = "right"
 lvim.builtin.nvimtree.setup.view.relativenumber = true
+lvim.builtin.nvimtree.setup.view.width = 50;
 vim.opt.relativenumber = true
 
 -- Cmd + 1 to switch to buffer 1
@@ -25,9 +26,6 @@ lvim.plugins = {
     "sainnhe/gruvbox-material",
     'chrisgrieser/nvim-puppeteer', -- for auto string interpolation converter
     'tpope/vim-surround',          -- surround selected text with parenthesis, curly braces etc
-    config = function()
-      vim.cmd("colorscheme gruvbox-material")
-    end,
     {
       "windwp/nvim-ts-autotag",
       event = "BufRead",
@@ -69,19 +67,16 @@ linters.setup {
   { command = "eslint", filetypes = { "typescript", "typescriptreact" } }
 }
 
--- Prettier
+-- Set up formatters
 local formatters = require "lvim.lsp.null-ls.formatters"
 formatters.setup {
-  {
-    command = "prettier",
-    filetypes = { "typescript", "typescriptreact" },
-  },
+  { command = "prettierd", filetypes = { "javascript", "typescript", "html", "css", "json" } },
 }
 
 lvim.format_on_save.enabled = true
 
--- floating terminal window on leader t t
-lvim.keys.normal_mode["<leader>t"] = ":ToggleTerm direction=float<CR><cmd>startinsert<cr>"
+-- floating terminal window on leader + j
+-- lvim.keys.normal_mode["<leader>j"] = ":ToggleTerm direction=float<CR><cmd>startinsert<cr>"
 
 -- Define the new terminal mapping
 local my_search_mapping = {
@@ -89,12 +84,29 @@ local my_search_mapping = {
 }
 
 -- Retrieve the existing leader s mappings
-local existing_mappings = lvim.builtin.which_key.mappings["s"] or {}
+local existing_search_mappings = lvim.builtin.which_key.mappings["s"] or {}
 
 -- Merge the existing mappings with the new mapping
 for key, value in pairs(my_search_mapping) do
-  existing_mappings[key] = value
+  existing_search_mappings[key] = value
 end
 
 -- Set the updated mappings
-lvim.builtin.which_key.mappings["s"] = existing_mappings
+lvim.builtin.which_key.mappings["s"] = existing_search_mappings
+
+
+-- Define the new terminal mapping
+local my_git_mappings = {
+  m = { "<cmd>Gvdiffsplit!<cr>", "Merge conflict diff fix" }
+}
+
+-- Retrieve the existing leader g mappings
+local existing_git_mappings = lvim.builtin.which_key.mappings["g"] or {}
+
+-- Merge the existing mappings with the new mapping
+for key, value in pairs(my_git_mappings) do
+  existing_git_mappings[key] = value
+end
+
+-- Set the updated mappings
+lvim.builtin.which_key.mappings["g"] = existing_git_mappings
